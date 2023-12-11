@@ -1,17 +1,24 @@
+tp@EcomVM:~/Téléchargements/Ansible-main$ cat a.yml
 ---
 - name: IP
-  hosts: debian_servers
+  hosts: debian
   become: yes
+  gather_facts: no
+  connection: local
+  vars:
+    ansible_connection: network_cli
+    ansible_network_os: vyos  # Replace with your actual network OS
   vars_files:
-      - credentials.yml
+    - credentials.yml
   tasks:
-    - name: Executer plusieurs commandes
-      command: "{{ item }}"
-      with_items:
-        - "ip a"
-        - "ls /etc"
+    - name: Afficher les informations IP
+      shell: | 
+        ip a
+        cat /etc/network/interfaces
+      register: ip_result
 
-    - name: Afficher le résultat
+
+    - name: Afficher le résultat par machine
       debug:
-        var: item.stdout
-      with_items: "{{ ansible_hosts }}"
+        var: ip_result.stdout
+    
