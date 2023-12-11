@@ -1,0 +1,15 @@
+---
+- name: IP
+  hosts: debian_servers
+  become: yes
+  vars_files:
+      - credentials.yml
+  tasks:
+    - name: Afficher les informations IP
+      command: ip a
+      register: ip_result
+
+    - name: Afficher le résultat par machine
+      debug:
+        var: ip_result.stdout
+      with_items: "{{ ansible_hosts }}"
