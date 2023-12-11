@@ -1,4 +1,3 @@
-tp@EcomVM:~/Téléchargements/Ansible-main$ cat a.yml
 ---
 - name: IP
   hosts: debian
