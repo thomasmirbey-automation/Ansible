@@ -1,0 +1,17 @@
+---
+- name: IP
+  hosts: debian_servers
+  become: yes
+  vars_files:
+      - credentials.yml
+  tasks:
+    - name: Executer plusieurs commandes
+      command: "{{ item }}"
+      with_items:
+        - "ip a"
+        - "ls /etc"
+
+    - name: Afficher le résultat
+      debug:
+        var: item.stdout
+      with_items: "{{ ansible_hosts }}"
